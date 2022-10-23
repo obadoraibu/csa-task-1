@@ -70,14 +70,17 @@ gcc -masm=intel \
 ## Рефакторинг
 
 ###    Бесполезные переприсваивания(выполняется для всех .s файлов):
-*     - mov	rax, rsp 						
-	    mov	r12, rax 
-      + mov r12, rsp
-*     - mov	rax, rsp 					
-	  - mov	rbx, rax
-	  + mov rbx, rsp
-*     - mov	rax, QWORD PTR [rax] 
-	  - mov	rdi, rax
+*       - mov	rax, rsp 						
+	- mov	r12, rax 
+        + mov r12, rsp
+*       - mov	rax, rsp 					
+        - mov	rbx, rax
+	+ mov rbx, rsp
+*       - mov	rax, QWORD PTR [rax] 
+	- mov	rdi, rax
+* 	- lea	rax, .LC0[rip] 
+	- mov	rsi, rax
+	+ mov	rsi, .LC0[rip] 
 	  
 и.т.д (все изменения в исходниках)
 ###    Прочее(выполняется для всех .s файлов):
