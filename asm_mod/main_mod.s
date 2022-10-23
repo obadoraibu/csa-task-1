@@ -29,22 +29,17 @@ main:
 	sub	rsp, 240						# rsp -= 240
 	mov	DWORD PTR -148[rbp], edi 		# argc в регистр edi
 	mov	QWORD PTR -160[rbp], rsi 		# argv в регистр rsi
-	mov	rax, rsp 						# rax := rsp
-	mov	r12, rax 						# r12 := rax
+	mov	r12, rsp						# r12 := rsp
 	cmp	DWORD PTR -148[rbp], 2 			# if argc != 2:
 	jne	.L2 							#	go to L2
-	mov	rax, rsp 						# rax := rsp
-	mov	rbx, rax 						# rbx := rsp(rax)
+	mov	rbx, rsp  						# rbx := rsp
 	mov	rax, QWORD PTR -160[rbp]		# rax := -160 на стеке (сохраняем argv[0])
-	add	rax, 8 							# rax += 8 (argv[1])
-	mov	rax, QWORD PTR [rax] 
-	mov	rdi, rax
+	add	rax, 8 							# rax += 8 (argv[1]) 
+	mov	rdi, QWORD PTR [rax] 
 	call	atoi@PLT 					# atoi(argv[1])
-	mov	DWORD PTR -140[rbp], eax 		# n = eax => (-148 = n)
-	lea	rax, .LC0[rip] 
-	mov	rsi, rax 						# rsi = "r"
-	lea	rax, .LC1[rip]
-	mov	rdi, rax 						# rdi "input.txt"
+	mov	DWORD PTR -140[rbp], eax 		# n = eax => (-148 = n)  
+	mov	rsi, .LC0[rip] 						# rsi = "r"
+	mov	rdi, .LC1[rip] 						# rdi "input.txt"
 	call	fopen@PLT
 	mov	QWORD PTR -96[rbp], rax 		# -96 = input
 	mov	eax, DWORD PTR -140[rbp]		 
@@ -57,7 +52,6 @@ main:
 	movsx	rdx, eax
 	mov	QWORD PTR -192[rbp], rdx
 	mov	QWORD PTR -184[rbp], 0
-	cdqe
 	lea	rdx, 0[0+rax*4]
 	mov	eax, 16
 	sub	rax, 1
@@ -104,7 +98,6 @@ main:
 	movsx	rdx, eax
 	mov	QWORD PTR -224[rbp], rdx
 	mov	QWORD PTR -216[rbp], 0
-	cdqe
 	lea	rdx, 0[0+rax*4]
 	mov	eax, 16
 	sub	rax, 1
@@ -145,7 +138,6 @@ main:
 	jmp	.L9
 .L10:
 	mov	eax, DWORD PTR -40[rbp]
-	cdqe
 	lea	rdx, 0[0+rax*4]
 	mov	rax, QWORD PTR -112[rbp]
 	add	rdx, rax
@@ -170,10 +162,8 @@ main:
 	mov	rdi, rax
 	call	logic_and_print@PLT
 	mov	DWORD PTR -84[rbp], eax
-	lea	rax, .LC3[rip]
-	mov	rsi, rax
-	lea	rax, .LC4[rip]
-	mov	rdi, rax
+	mov	rsi, .LC3[rip] 
+	mov	rdi, .LC4[rip]
 	call	fopen@PLT
 	mov	QWORD PTR -136[rbp], rax
 	mov	DWORD PTR -44[rbp], 0
@@ -217,7 +207,6 @@ main:
 	movsx	rdx, eax
 	mov	QWORD PTR -256[rbp], rdx
 	mov	QWORD PTR -248[rbp], 0
-	cdqe
 	lea	rdx, 0[0+rax*4]
 	mov	eax, 16
 	sub	rax, 1
@@ -264,7 +253,6 @@ main:
 	movsx	rdx, eax
 	mov	r14, rdx
 	mov	r15d, 0
-	cdqe
 	lea	rdx, 0[0+rax*4]
 	mov	eax, 16
 	sub	rax, 1
@@ -305,7 +293,6 @@ main:
 	jmp	.L20
 .L21:
 	mov	eax, DWORD PTR -36[rbp]
-	cdqe
 	lea	rdx, 0[0+rax*4]
 	mov	rax, QWORD PTR -64[rbp] 
 	add	rax, rdx
@@ -353,22 +340,3 @@ main:
 	pop	r15
 	pop	rbp
 	ret							# выход
-	.size	main, .-main
-	.ident	"GCC: (Ubuntu 11.2.0-19ubuntu1) 11.2.0"
-	.section	.note.GNU-stack,"",@progbits
-	.section	.note.gnu.property,"a"
-	.align 8
-	.long	1f - 0f
-	.long	4f - 1f
-	.long	5
-0:
-	.string	"GNU"
-1:
-	.align 8
-	.long	0xc0000002
-	.long	3f - 2f
-2:
-	.long	0x3
-3:
-	.align 8
-4:
